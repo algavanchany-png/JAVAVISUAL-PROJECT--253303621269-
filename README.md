@@ -89,3 +89,32 @@ NIM: 253303621269
 Kelas: Sistem Informasi Pagi 3-B
 
 Link Google Docs Analisis (Bagian D):https://docs.google.com/document/d/1Hj7ydaICSuB1yNE1RJtG0xxb4lDeT7WdjJKfeLuvxrA/edit?usp=sharing - DOCS
+## 🌟 TP10 — Character Manager Sprint #4 (Theming, Properti Komponen & MVC)
+
+Pada sprint ke-4 ini, antarmuka aplikasi ditingkatkan dengan penerapan sistem *theming* terpusat melalui class `AppTheme`, konfigurasi properti komponen GUI secara profesional, serta pemisahan tanggung jawab arsitektur MVC yang ketat.
+
+### 📸 Tangkapan Layar (Screenshot) Output TP10
+![Output Terminal TP10](screenshots/OUTPUT%20TERMINAL%20TP10.png)
+
+### 📂 Struktur Folder Proyek
+```text
+CharacterManager/
+├── screenshots/
+│   ├── OUTPUT TERMINAL TP-3.png
+│   ├── OUTPUT TERMINAL TP5.png
+│   ├── OUTPUT TERMINAL TP8 AFTER.png
+│   ├── OUTPUT TERMINAL TP8 BEFORE.png
+│   └── OUTPUT TERMINAL TP10.png
+├── src/
+│   └── com/
+│       └── unpri/
+│           └── charactermanager/
+│               ├── model/
+│               │   ├── Character.java
+│               │   ├── CharacterManager.java
+│               │   └── CharacterType.java
+│               ├── view/
+│               │   ├── AppTheme.java
+│               │   └── MainWindow.java
+│               └── Main.java
+└── README.md
