@@ -1,21 +1,27 @@
 package com.unpri.charactermanager.model;
 
+import java.util.Objects;
+
 public class Character {
+    // static counter untuk melacak total objek Character yang pernah dibuat (Bagian D)
+    private static int totalCharacterCreated = 0;
+
     private String name;
     private CharacterType type;
     private int level;
     private int hitPoints;
     private int attack;
-    private int mana; // Atribut tambahan untuk Mini-Challenge
+    private int mana;
 
-    // Constructor 1: Sederhana (Nama, Tipe, Level)
+    // Constructor 1: Sederhana
     public Character(String name, CharacterType type, int level) {
         this.name = name;
         this.type = type;
         this.level = level;
         this.hitPoints = level * 20;
         this.attack = level * 10;
-        this.mana = 50; // Default mana
+        this.mana = 50;
+        totalCharacterCreated++;
     }
 
     // Constructor 2: Lengkap
@@ -25,10 +31,14 @@ public class Character {
         this.level = level;
         this.hitPoints = hitPoints;
         this.attack = attack;
-        setMana(mana); // Menggunakan setter agar tervalidasi
+        setMana(mana);
+        totalCharacterCreated++;
     }
 
-    // Getter dan Setter standar
+    public static int getTotalCharacterCreated() {
+        return totalCharacterCreated;
+    }
+
     public String getName() {
         return name;
     }
@@ -71,7 +81,6 @@ public class Character {
         this.attack = attack;
     }
 
-    // Getter dan Setter Mana dengan Validasi Exception (Mini-Challenge)
     public int getMana() {
         return mana;
     }
@@ -83,12 +92,24 @@ public class Character {
         this.mana = mana;
     }
 
-    // Method isAlive (Mini-Challenge)
     public boolean isAlive() {
         return this.hitPoints > 0;
     }
 
-    // toString diperbarui menampilkan atribut mana
+    // Bagian A: Overriding equals() untuk membandingkan kesamaan nama karakter
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Character character = (Character) o;
+        return Objects.equals(name, character.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);
+    }
+
     @Override
     public String toString() {
         return "Character{" +
