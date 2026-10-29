@@ -43,3 +43,49 @@ CharacterManager/
 │               │   └── CharacterType.java
 │               └── Main.java
 └── README.md
+# Character Manager — TP8 / Sprint #3 (Java Visual SIH-6406)
+
+Aplikasi Character Manager bertransformasi dari aplikasi berbasis console* menjadi aplikasi berbasis GUI (*Graphical User Interface*) menggunakan Java Swing. Pada Sprint #3 (TP8) ini, fokus utama adalah penerapan pemrograman *event-driven*, arsitektur MVC (*Model-View-Controller*), serta penyajian data dinamis ke dalam komponen jendela grafis.
+
+## 📸 Tangkapan Layar (Screenshot) MainWindow & Statistik
+*Sebelum / Data Awal (Before):
+  ![MainWindow TP8 Before](screenshots/OUTPUT%20TERMINAL%20TP8%20BEFORE.png)
+*Sesudah Perubahan Data (After):
+  ![MainWindow TP8 After](screenshots/OUTPUT%20TERMINAL%20TP8%20AFTER.png)
+
+## 📂 Struktur Folder Proyek
+```text
+CharacterManager/
+├── screenshots/
+│   ├── OUTPUT TERMINAL TP-3.png
+│   ├── OUTPUT TERMINAL TP5.png
+│   ├── OUTPUT TERMINAL TP8 BEFORE.png
+│   └── OUTPUT TERMINAL TP8 AFTER.png
+├── src/
+│   └── com/
+│       └── unpri/
+│           └── charactermanager/
+│               ├── model/
+│               │   ├── Character.java
+│               │   ├── CharacterManager.java
+│               │   └── CharacterType.java
+│               ├── view/
+│               │   └── MainWindow.java
+│               └── Main.java
+└── README.md
+🔄 Alur Data & Hubungannya dengan MVC (Bagian C)
+Alur data dimulai dari Main yang menginisialisasi CharacterManager (selaku komponen Model yang menyimpan data objek). Selanjutnya, MainWindow (selaku View) mengambil data koleksi karakter tersebut menggunakan method getAllCharacters() secara defensif tanpa merusak enkapsulasi. Terakhir, antarmuka memperbarui komponen JLabel dan statistik secara dinamis berdasarkan pembaruan data tersebut, mencerminkan prinsip pemisahan tugas (separation of concerns) dalam arsitektur MVC.
+
+👥 Daftar Karakter Baru & Alasan Pemilihan
+Arthas (WARRIOR, Level 7): Dipilih untuk memperkuat barisan petarung jarak dekat dengan kapasitas HitPoints dan Attack yang tinggi.
+
+Jaina (MAGE, Level 6): Ditambahkan untuk memberikan variasi pada tipe penyihir dengan atribut Mana yang besar guna mendukung keseimbangan perhitungan rata-rata level.
+
+👤 Identitas & Analisis Tugas
+Nama Lengkap: Alga Vancany Yunita Purba
+
+NIM: 253303621269
+
+Kelas: Sistem Informasi Pagi 3-B
+
+Link Google Docs Analisis (Bagian D):https://docs.google.com/document/d/1Hj7ydaICSuB1yNE1RJtG0xxb4lDeT7WdjJKfeLuvxrA/edit?usp=sharing - DOCS
