@@ -118,3 +118,23 @@ CharacterManager/
 │               │   └── MainWindow.java
 │               └── Main.java
 └── README.md
+
+## TP12: Manajemen Layout & UI Responsif
+
+### 1. Wireframe / Diagram Struktur Panel
+```text
++-------------------------------------------------------+
+|                       NORTH                           |
+|                  (Header Panel)                       |
++------------------------------+------------------------+
+|                              |                        |
+|                              |                        |
+|            CENTER            |          EAST          |
+|       (JScrollPane +         |       (Legend Panel    |
+|        Cards Panel)          |        BoxLayout)      |
+|                              |                        |
+|                              |                        |
++------------------------------+------------------------+
+|                       SOUTH                           |
+|           (Status Bar: Info di Kiri | v0.5)           |
++-------------------------------------------------------+

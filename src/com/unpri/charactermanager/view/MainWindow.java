@@ -1,108 +1,95 @@
 package com.unpri.charactermanager.view;
 
 import com.unpri.charactermanager.model.Character;
-import com.unpri.charactermanager.model.CharacterManager;
 import com.unpri.charactermanager.model.CharacterType;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.util.List;
 
 public class MainWindow extends JFrame {
-    private final CharacterManager characterManager;
-    private JLabel lblAverageLevel;
-    private JPanel panelCharacterList;
+    private JPanel cardsPanel;
+    private JLabel statusLabel;
 
-    // Konstanta batas level untuk highlight teks emas dan tebal (Mini-Challenge Bagian B)
-    public static final int HIGH_LEVEL_THRESHOLD = 5;
-
-    public MainWindow(CharacterManager manager) {
-        this.characterManager = manager;
-        
-        setTitle("Character Manager - Sprint #4 (TP10) | NIM: 253303621269");
+    public MainWindow(List<Character> characters) {
+        setTitle("Character Manager v0.5");
+        setSize(900, 650);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-        
-        // Menerapkan warna latar dari AppTheme (Tanpa hardcode)
-        getContentPane().setBackground(AppTheme.BG_COLOR);
-        setLayout(new BorderLayout(10, 10));
 
-        // Header Title
-        JLabel lblTitle = new JLabel("DAFTAR KARAKTER GAME (THEMED v0.4)", JLabel.CENTER);
-        lblTitle.setFont(AppTheme.FONT_TITLE);
-        lblTitle.setForeground(AppTheme.TEXT_PRIMARY);
-        lblTitle.setBorder(BorderFactory.createEmptyBorder(12, 12, 12, 12));
-        add(lblTitle, BorderLayout.NORTH);
+        // 1. BorderLayout Utama
+        setLayout(new BorderLayout());
 
-        // Panel Daftar Karakter
-        panelCharacterList = new JPanel();
-        panelCharacterList.setLayout(new BoxLayout(panelCharacterList, BoxLayout.Y_AXIS));
-        panelCharacterList.setBackground(AppTheme.BG_COLOR);
-        panelCharacterList.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
-        
-        refreshCharacterList();
+        // NORTH: Header Panel
+        JPanel headerPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 15, 10));
+        headerPanel.setBackground(new Color(5, 6, 47)); // #05062f
+        JLabel titleLabel = new JLabel("Character Manager Dashboard");
+        titleLabel.setForeground(Color.WHITE);
+        titleLabel.setFont(new Font("Segoe UI", Font.BOLD, 18));
+        headerPanel.add(titleLabel);
+        add(headerPanel, BorderLayout.NORTH);
 
-        JScrollPane scrollPane = new JScrollPane(panelCharacterList);
-        scrollPane.setBorder(BorderFactory.createEmptyBorder());
+        // CENTER: Daftar Kartu Karakter dengan JScrollPane
+        cardsPanel = new JPanel();
+        cardsPanel.setLayout(new BoxLayout(cardsPanel, BoxLayout.Y_AXIS));
+        cardsPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
+
+        populateCharacters(characters);
+
+        JScrollPane scrollPane = new JScrollPane(cardsPanel);
+        scrollPane.setPreferredSize(new Dimension(550, 400));
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         add(scrollPane, BorderLayout.CENTER);
 
-        // Footer Statistik Rata-rata Level
-        JPanel panelFooter = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        panelFooter.setBackground(AppTheme.BG_COLOR);
-        lblAverageLevel = new JLabel();
-        updateStatistics();
-        panelFooter.add(lblAverageLevel);
-        panelFooter.setBorder(BorderFactory.createEmptyBorder(5, 10, 10, 10));
-        add(panelFooter, BorderLayout.SOUTH);
+        // EAST: Panel Legenda menggunakan BoxLayout (Y_AXIS)
+        JPanel legendPanel = new JPanel();
+        legendPanel.setLayout(new BoxLayout(legendPanel, BoxLayout.Y_AXIS));
+        legendPanel.setBorder(BorderFactory.createTitledBorder("Character Type Legend"));
+        legendPanel.setPreferredSize(new Dimension(220, 0));
 
-        // Menggunakan pack() sesuai ketentuan Bagian A & D
-        pack();
-        setSize(500, getHeight() < 550 ? 550 : getHeight());
-    }
-
-    public void refreshCharacterList() {
-        panelCharacterList.removeAll();
-        for (Character c : characterManager.getAllCharacters()) {
-            JPanel card = new JPanel(new GridLayout(2, 1));
-            card.setOpaque(true); // Wajib setOpaque(true) agar warna background kartu tampil
-            card.setBackground(AppTheme.CARD_BG);
-            card.setBorder(AppTheme.CARD_BORDER);
-
-            // Properti Tambahan #1: Tooltip detail informasi HP, Attack, dan Mana
-            card.setToolTipText("Detail -> [HP: " + c.getHitPoints() + ", Attack: " + c.getAttack() + ", Mana: " + c.getMana() + "]");
-
-            // Properti Tambahan #2: Menonaktifkan kartu (setEnabled(false)) untuk karakter level dasar (Level <= 1)
-            if (c.getLevel() <= 1) {
-                card.setEnabled(false);
-            }
-
-            // Label Nama & Role dengan warna dari AppTheme
-            JLabel lblInfo = new JLabel("  Nama: " + c.getName() + " | Tipe: " + c.getType() + " | Level: " + c.getLevel());
-            lblInfo.setForeground(AppTheme.colorFor(c.getType()));
-            
-            // Mini-Challenge: Level >= 5 tampil dengan teks emas dan tebal
-            if (c.getLevel() >= HIGH_LEVEL_THRESHOLD) {
-                lblInfo.setFont(AppTheme.FONT_HIGHLIGHT);
-                lblInfo.setForeground(AppTheme.HIGHLIGHT_GOLD);
-            } else {
-                lblInfo.setFont(AppTheme.FONT_CARD_TITLE);
-            }
-
-            JLabel lblStats = new JLabel("  HP: " + c.getHitPoints() + " | Attack: " + c.getAttack() + " | Mana: " + c.getMana() + " | Hidup: " + c.isAlive());
-            lblStats.setFont(AppTheme.FONT_BODY);
-            lblStats.setForeground(AppTheme.TEXT_MUTED);
-
-            card.add(lblInfo);
-            card.add(lblStats);
-            panelCharacterList.add(card);
+        legendPanel.add(Box.createVerticalStrut(10));
+        for (CharacterType type : CharacterType.values()) {
+            JLabel typeLabel = new JLabel("• " + type.name());
+            typeLabel.setBorder(new EmptyBorder(5, 10, 5, 10));
+            legendPanel.add(typeLabel);
         }
-        panelCharacterList.revalidate();
-        panelCharacterList.repaint();
+        legendPanel.add(Box.createVerticalGlue());
+        add(legendPanel, BorderLayout.EAST);
+
+        // SOUTH: Bar Status (Teks di kiri, "v0.5" di kanan)
+        JPanel statusPanel = new JPanel(new BorderLayout());
+        statusPanel.setBorder(new EmptyBorder(5, 10, 5, 10));
+        statusPanel.setBackground(new Color(245, 245, 245));
+
+        statusLabel = new JLabel("Status: Ready (" + characters.size() + " characters loaded)");
+        JLabel versionLabel = new JLabel("v0.5");
+        versionLabel.setFont(new Font("Segoe UI", Font.BOLD, 12));
+
+        statusPanel.add(statusLabel, BorderLayout.WEST);
+        statusPanel.add(versionLabel, BorderLayout.EAST);
+        add(statusPanel, BorderLayout.SOUTH);
     }
 
-    public void updateStatistics() {
-        double avg = characterManager.getAverageLevel();
-        lblAverageLevel.setText(" Rata-rata Level Karakter: " + String.format("%.2f", avg));
-        lblAverageLevel.setFont(AppTheme.FONT_CARD_TITLE);
-        lblAverageLevel.setForeground(AppTheme.TEXT_PRIMARY);
+    private void populateCharacters(List<Character> characters) {
+        cardsPanel.removeAll();
+        for (Character c : characters) {
+            JPanel card = new JPanel(new BorderLayout());
+            card.setBorder(BorderFactory.createCompoundBorder(
+                    BorderFactory.createEmptyBorder(5, 5, 5, 5),
+                    BorderFactory.createLineBorder(new Color(27, 38, 68), 1, true)
+            ));
+            card.setBackground(Color.WHITE);
+            card.setMaximumSize(new Dimension(Integer.MAX_VALUE, 70));
+
+            JLabel infoLabel = new JLabel("  " + c.getName() + " | Role: " + c.getType() + " | Level: " + c.getLevel());
+            infoLabel.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+            card.add(infoLabel, BorderLayout.CENTER);
+
+            cardsPanel.add(card);
+            cardsPanel.add(Box.createVerticalStrut(5));
+        }
+        cardsPanel.revalidate();
+        cardsPanel.repaint();
     }
 }
